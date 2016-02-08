@@ -21,7 +21,7 @@ angular
       events:true,
     });
 
-    $urlRouterProvider.otherwise('/dashboard/home');
+    $urlRouterProvider.otherwise('/login');
 
     $stateProvider
       .state('dashboard', {
@@ -85,8 +85,6 @@ angular
               files:[
               'scripts/controllers/main.js',
               'scripts/directives/timeline/timeline.js',
-              'scripts/directives/notifications/notifications.js',
-              'scripts/directives/chat/chat.js',
               'scripts/directives/dashboard/stats/stats.js'
               ]
             })
