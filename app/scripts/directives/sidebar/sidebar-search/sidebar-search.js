@@ -11,7 +11,7 @@ angular.module('sbAdminApp')
   .directive('sidebarSearch',function() {
     return {
       templateUrl:'scripts/directives/sidebar/sidebar-search/sidebar-search.html',
-      restrict: 'E',
+      restrict: 'E','login',
       replace: true,
       scope: {
       },

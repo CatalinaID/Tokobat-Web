@@ -26,7 +26,7 @@ angular
     $stateProvider
       .state('dashboard', {
         url:'/dashboard',
-        templateUrl: 'views/dashboard/main.html',
+        templateUrl: 'views/main.html',
         resolve: {
             loadMyDirectives:function($ocLazyLoad){
                 return $ocLazyLoad.load(
@@ -100,8 +100,19 @@ angular
         url:'/blank'
     })
       .state('login',{
-        templateUrl:'views/pages/login.html',
-        url:'/login'
+        templateUrl:'views/login.html',
+        url:'/login',
+        resolve: {
+            loadMyDirectives:function($ocLazyLoad){
+                return $ocLazyLoad.load(
+                {
+                    name:'sbAdminApp',
+                    files:[
+                    'scripts/directives/header/header.js',
+                    ]
+                })
+            }
+        }
     })
       .state('dashboard.chart',{
         templateUrl:'views/chart.html',
