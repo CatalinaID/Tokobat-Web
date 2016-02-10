@@ -60,6 +60,14 @@ img.logo-header {
     min-height: 50px;
 }
 
+a.dropdown-toggle {
+    color : #efffcd !important;
+}
+
+a:hover.dropdown-toggle, .open a {
+    color : #555152 !important;
+}
+
 .navbar-top-links .dropdown-menu li {
     display: block;
 }
@@ -99,6 +107,10 @@ img.logo-header {
 .navbar-top-links .dropdown-user {
     right: 0;
     left: auto;
+}
+
+.sidebar-nav a {
+    color: #8bc53f;
 }
 
 .sidebar .sidebar-nav.navbar-collapse {
@@ -240,6 +252,7 @@ img.logo-home{
     margin-left: 15%;
     margin-right: 15%;
     background: none;
+    border-color: #555152;
 }
 
 .btn-login {
