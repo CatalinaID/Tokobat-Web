@@ -8,6 +8,8 @@
 // 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
+  var port = (process.env.VCAP_APP_PORT || 9000);
+  var host = (process.env.VCAP_APP_HOST || 'localhost');
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
@@ -66,9 +68,9 @@ module.exports = function (grunt) {
     // The actual grunt server settings
     connect: {
       options: {
-        port: 9000,
+        port: port,
         // Change this to '0.0.0.0' to access the server from outside.
-        hostname: 'localhost',
+        hostname: host,
         livereload: 35729
       },
       livereload: {
