@@ -204,6 +204,15 @@ a:hover.dropdown-toggle, .open a {
     color: #fff;
 }
 
+.btn-tokobat {
+    background: #8bc53f;
+    text-transform: uppercase;
+    margin-right: 10px;
+    text-decoration: none;
+    color: #efffcd;
+    border-radius: 0px;
+}
+
 .chat {
     margin: 0;
     padding: 0;
@@ -262,9 +271,6 @@ img.logo-home{
     margin-right: auto;
     display: block;
     width: 20%;
-}
-
-a.btn-login {
     text-decoration: none;
     color: #efffcd;
 }

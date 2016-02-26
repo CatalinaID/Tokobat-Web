@@ -1,0 +1,48 @@
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Order Details</h1>
+        </div>
+    </div>
+
+    <div class="row">
+    	<div class="col-lg-12">
+    		<div class="row button-row" style="margin-left:2%;">
+                <button class="btn btn-tokobat" name="accept" ng-click="acceptOrder()">
+                    <i class="fa fa-check-square-o"> </i>
+                    Accept
+                </button>
+                <button class="btn btn-tokobat" name"decline" ng-click="declineOrder()">
+                    <i class="fa fa-close"> </i>
+                    Decline
+                </button>
+                <button class="btn btn-tokobat" name="ready" style="margin-right:4%; float:right;" ng-click="orderReady()">
+                    <i class="fa fa-check-square-o"> </i>
+                    Ready
+                </button>
+            </div>
+            <div class="panel panel-default" style="margin-top:10px;">
+                <div class="panel-heading">
+                    Order by : <b>{{name}}</b>
+                </div>
+                <div class="panel-body">
+                    <p>Order time : {{date | date:'yyyy-MM-dd HH:mm:ss'}}</p>
+
+                    <div class="content">
+                        <p>List of medicine : </p>
+                        <div ng-show="isResep">
+                            <img src={{imgPath}}></img>
+                        </div>
+                        <div ng-hide="isResep">
+                            <p> {{description}}</p>
+                        </div>
+                    </div>
+
+                    <div class="notes">
+                        <p> Notes : {{notes}} </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
