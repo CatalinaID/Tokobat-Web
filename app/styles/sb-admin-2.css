@@ -27,6 +27,11 @@ body {
     }
 }
 
+img.recipt {
+    width: 80%;
+    height: auto;
+}
+
 img.logo-header {
     width: 100px;
     height: 30px;
@@ -211,6 +216,10 @@ a:hover.dropdown-toggle, .open a {
     text-decoration: none;
     color: #efffcd;
     border-radius: 0px;
+}
+
+.btn-tokobat[disabled]:hover{
+    color: #efffcd;
 }
 
 .chat {

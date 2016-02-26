@@ -31,65 +31,129 @@ angular.module('sbAdminApp')
 angular.module('sbAdminApp')
   .controller('OrderDetailsCtrl', function($scope,$resource, $stateParams, $modal) {
       $scope.id = $stateParams.id;
+      $scope.leftActive = true;
+      $scope.rightActive = true;
 
       var getDetails  = $resource(Config.API_URL + '/transactions/detail', {id: $scope.id}, {
         'get': {method: 'GET'}
       }); 
+      var updateStatus = $resource(Config.API_URL + '/transactions/:id', 
+        {id:'@id', apotekNotes:'@apotekNotes', totalPrice:'@totalPrice',status:'@status'}, 
+        {'put': {method: 'PUT'}
+      });
 
       getDetails.get(function(response) {
         $scope.name = response.user.name;
         $scope.date = response.dateCreate;
         $scope.description = response.description;
         $scope.notes = response.notes;
-        $scope.imgPath = response.imgPath;
+        $scope.status = response.status;
 
-        if ($scope.imgPath == null && $scope.description != null) {
+        if (response.imgPath == null) {
           $scope.isResep = false;
         } else {
           $scope.isResep = true;
-          $scope.imgPath = Config.API_URL + '/transactions/get-resep?imgPath=resep-2016-02-26%2009:15:20.263';
+          $scope.imgPath = Config.API_URL + '/transactions/get-resep?imgPath='+response.imgPath;
         }
 
-        $scope.declineOrder = function() {
-          var modalDecline = $modal.open({
-            animation: true,
-            templateUrl: 'views/modal/decline_order.html',
-            controller: 'ModalDeclineOrderController',
-            backdrop: 'static',
-            size: "lg",
-            scope:$scope
-          });
-
-          modalDecline.result.then(function(apotekNotes) {
-            $scope.apotekNotes = apotekNotes;
-          }, function() {
-
-          });
-        };
-
-        $scope.acceptOrder = function() {
-
-        };
-
-        $scope.orderReady = function() {
-
-        };
-
-
-
-
-
+        if ($scope.status === 'WAITING') {
+          $scope.leftActive = false;
+          $scope.rightActive = true;
+        } else if ($scope.status === 'ACCEPTED' || $scope.status === 'DECLINED' || $scope.status === 'PAID') {
+          $scope.leftActive = true;
+          $scope.rightActive = false;
+        } else if ($scope.status === 'READY' || $scope.status === 'FINISH') {
+          $scope.leftActive = true;
+          $scope.rightActive = true;
+        }
       });
+
+      $scope.declineOrder = function() {
+        var modalDecline = $modal.open({
+          animation: true,
+          templateUrl: 'views/modal/decline_order.html',
+          controller: 'ModalDeclineOrderController',
+          backdrop: 'static',
+          size: "lg",
+          scope:$scope
+        });
+
+        modalDecline.result.then(function(apotekNotes) {
+          var param = {
+            "id" : $scope.id,
+            "status" : "DECLINED",
+            "apotekNotes" : apotekNotes
+          };
+          updateStatus.put(param, function(response) {
+            $scope.leftActive = true;
+            console.log(param);
+            //TODO : toast if success
+          });
+        });
+      };
+
+      $scope.acceptOrder = function() {
+        var modalAccept = $modal.open({
+          animation: true,
+          templateUrl: 'views/modal/accept_order.html',
+          controller: 'ModalAcceptOrderController',
+          backdrop: 'static',
+          size: "lg",
+          scope:$scope
+        });
+
+        modalAccept.result.then(function(result) {
+          var acceptParam = {
+            "id" : $scope.id,
+            "status" : "ACCEPTED",
+            "apotekNotes" : result.apotekNotes,
+            "totalPrice" : result.totalPrice
+          };
+          console.log(acceptParam);
+          updateStatus.put(acceptParam, function(response) {
+            $scope.leftActive = true;
+            //TODO : toast if success
+          });
+        });
+      };
+
+      $scope.orderReady = function() {
+        var param = {
+          "id" : $scope.id,
+          "status" : "READY"
+          };
+          console.log(param);
+          updateStatus.put(param, function(response) {
+            $scope.rightActive = true;
+            //TODO : toast if active
+          });
+      };
   });
 
   angular.module('sbAdminApp')
-  .controller('ModalDeclineOrderController', function($scope,$resource, $modalDecline) {
+  .controller('ModalDeclineOrderController', function($scope,$modalInstance) {
       
       $scope.ok = function () {
-        $modalDecline.close($scope.apotekNotes);
+        $modalInstance.close($scope.apotekNotes);
       };
 
       $scope.cancel = function () {
-        $modalDecline.dismiss('cancel');
+        $modalInstance.dismiss('cancel');
+      };
+  });
+
+  angular.module('sbAdminApp')
+  .controller('ModalAcceptOrderController', function($scope,$modalInstance) {
+      
+      $scope.ok = function () {
+        $scope.result = {
+          "apotekNotes" : $scope.apotekNotes,
+          "totalPrice" : $scope.totalPrice
+        }
+        $modalInstance.close($scope.result);
+      };
+
+      $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
       };
   });

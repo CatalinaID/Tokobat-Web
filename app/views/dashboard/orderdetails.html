@@ -8,15 +8,15 @@
     <div class="row">
     	<div class="col-lg-12">
     		<div class="row button-row" style="margin-left:2%;">
-                <button class="btn btn-tokobat" name="accept" ng-click="acceptOrder()">
+                <button ng-disabled="leftActive" class="btn btn-tokobat" name="accept" ng-click="acceptOrder()">
                     <i class="fa fa-check-square-o"> </i>
                     Accept
                 </button>
-                <button class="btn btn-tokobat" name"decline" ng-click="declineOrder()">
+                <button ng-disabled="leftActive" class="btn btn-tokobat" name"decline" ng-click="declineOrder()">
                     <i class="fa fa-close"> </i>
                     Decline
                 </button>
-                <button class="btn btn-tokobat" name="ready" style="margin-right:4%; float:right;" ng-click="orderReady()">
+                <button ng-disabled="rightActive" class="btn btn-tokobat" name="ready" style="margin-right:4%; float:right;" ng-click="orderReady()">
                     <i class="fa fa-check-square-o"> </i>
                     Ready
                 </button>
@@ -31,7 +31,7 @@
                     <div class="content">
                         <p>List of medicine : </p>
                         <div ng-show="isResep">
-                            <img src={{imgPath}}></img>
+                            <img src={{imgPath}} class="recipt"></img>
                         </div>
                         <div ng-hide="isResep">
                             <p> {{description}}</p>
