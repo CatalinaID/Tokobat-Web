@@ -13,7 +13,9 @@ angular
     'ui.router',
     'ui.bootstrap',
     'angular-loading-bar',
-    'datatables'
+    'datatables',
+    'ngResource',
+    'ngCookies'
   ])
   .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider) {
     
@@ -93,6 +95,7 @@ angular
       })
       .state('login',{
         templateUrl:'views/login.html',
+        controller: 'LoginCtrl',
         url:'/login',
         resolve: {
             loadMyDirectives:function($ocLazyLoad){
@@ -101,6 +104,7 @@ angular
                     name:'sbAdminApp',
                     files:[
                     'scripts/directives/header/header.js',
+                    'scripts/controllers/login.js'
                     ]
                 })
             }
@@ -110,6 +114,22 @@ angular
         url:'/order',
         templateUrl: 'views/dashboard/order.html',
         controller: 'OrderCtrl',
+        resolve: {
+          loadMyFiles: function($ocLazyLoad) {
+            return $ocLazyLoad.load({
+              name: 'sbAdminApp',
+              files:[
+              'scripts/controllers/main.js',
+              'scripts/controllers/order.js',
+              ]
+            })
+          }
+        }
+      })
+      .state('dashboard.details',{
+        url:'/details/:id',
+        templateUrl: 'views/dashboard/orderdetails.html',
+        controller: 'OrderDetailsCtrl',
         resolve: {
           loadMyFiles: function($ocLazyLoad) {
             return $ocLazyLoad.load({

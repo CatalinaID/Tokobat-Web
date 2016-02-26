@@ -8,21 +8,23 @@
                 </div>
                 <div class="login-panel panel panel-default">
                     <div class="panel-body">
-                        <form role="form">
+                        <div ng-show="error" class="alert alert-danger">{{error}}</div>
+                        <form role="form" ng-submit="login()" name="form">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Id" name="id" type="id" autofocus>
+                                    <input class="form-control" required ng-model="username" placeholder="Username" name="username" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    <input class="form-control" required ng-model="password" placeholder="Password" name="password" type="password" value="">
                                 </div>
                                 <div class="checkbox">
                                     <label>
                                         <input name="remember" type="checkbox" value="Remember Me">Remember Me
                                     </label>
                                 </div>
-                                <!-- Change this to a button or input when using this as a form -->
-                                <a ui-sref="dashboard.home" class="btn btn-login">Login</a>
+                                <div class="form-actions">
+                                    <button type="submit" ng-disabled="form.$invalid" class="btn btn-login">Login</button>
+                                </div>
                             </fieldset>
                         </form>
                     </div>
