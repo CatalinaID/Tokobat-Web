@@ -2,11 +2,11 @@
 
 
 angular.module('sbAdminApp')
-  .controller('OrderCtrl', function($scope, DTOptionsBuilder, $resource, $filter) {
-      $scope.id = 1;
+  .controller('OrderCtrl', function($rootScope, $scope, DTOptionsBuilder, $resource, $filter) {
+      $scope.id = $rootScope.id;
       $scope.dtOptions = DTOptionsBuilder.newOptions()
           .withDisplayLength(10)
-          .withOption('bLengthChange', false);
+          .withOption('order', [2, 'desc']);
 
   		var getAllOrder  = $resource(Config.API_URL + '/transactions', {apotekId: $scope.id}, {
         'get': {method: 'GET'}
@@ -16,15 +16,25 @@ angular.module('sbAdminApp')
 
       getAllOrder.get(function(response) {
         for (var i = 0; i < response.total; i++) {
-          $scope.orderdata.push({
-            "name" : response.transactions[i].senderName,
-            "read" : response.transactions[i].read,
-            "id" : response.transactions[i].transId,
-            "timestamp" : response.transactions[i].dateCreate,
-            "status" : response.transactions[i].status
-          });
+          if (response.transactions[i].status != 'FINISHED' && response.transactions[i].status != 'DECLINED'){
+            $scope.orderdata.push({
+              "name" : response.transactions[i].senderName,
+              "read" : response.transactions[i].read,
+              "id" : response.transactions[i].transId,
+              "timestamp" : response.transactions[i].dateCreate,
+              "status" : response.transactions[i].status
+            });
+          }
         };
       });
+
+      $scope.set_style = function(data) {
+        if (!data.read) {
+          return {"font-weight" : "bold"}
+        } else {
+          return {"font-weight" : "normal"}
+        }
+      }
 
   });
 
@@ -62,7 +72,7 @@ angular.module('sbAdminApp')
         } else if ($scope.status === 'ACCEPTED' || $scope.status === 'DECLINED' || $scope.status === 'PAID') {
           $scope.leftActive = true;
           $scope.rightActive = false;
-        } else if ($scope.status === 'READY' || $scope.status === 'FINISH') {
+        } else if ($scope.status === 'READY' || $scope.status === 'FINISHED') {
           $scope.leftActive = true;
           $scope.rightActive = true;
         }
@@ -87,7 +97,6 @@ angular.module('sbAdminApp')
           updateStatus.put(param, function(response) {
             $scope.leftActive = true;
             console.log(param);
-            //TODO : toast if success
           });
         });
       };
@@ -112,7 +121,6 @@ angular.module('sbAdminApp')
           console.log(acceptParam);
           updateStatus.put(acceptParam, function(response) {
             $scope.leftActive = true;
-            //TODO : toast if success
           });
         });
       };
@@ -125,7 +133,7 @@ angular.module('sbAdminApp')
           console.log(param);
           updateStatus.put(param, function(response) {
             $scope.rightActive = true;
-            //TODO : toast if active
+            $scope.leftActive = true;
           });
       };
   });

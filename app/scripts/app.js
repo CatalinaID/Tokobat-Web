@@ -83,6 +83,13 @@ angular
         resolve: {
           loadMyFiles:function($ocLazyLoad) {
             return $ocLazyLoad.load({
+              name:'chart.js',
+              files:[
+                'bower_components/angular-chart.js/dist/angular-chart.min.js',
+                'bower_components/angular-chart.js/dist/angular-chart.css'
+              ]
+            }),
+            $ocLazyLoad.load({
               name:'sbAdminApp',
               files:[
               'scripts/controllers/main.js',
@@ -137,6 +144,22 @@ angular
               files:[
               'scripts/controllers/main.js',
               'scripts/controllers/order.js',
+              ]
+            })
+          }
+        }
+      })
+      .state('dashboard.transaction',{
+        url:'/transaction/:id',
+        templateUrl: 'views/dashboard/transaction.html',
+        controller: 'TransactionCtrl',
+        resolve: {
+          loadMyFiles: function($ocLazyLoad) {
+            return $ocLazyLoad.load({
+              name: 'sbAdminApp',
+              files:[
+              'scripts/controllers/main.js',
+              'scripts/controllers/transaction.js',
               ]
             })
           }
